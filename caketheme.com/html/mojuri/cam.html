@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Try-On</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #video-container {
+      position: relative;
+      margin-bottom: 20px;
+      margin-top: 40px;
+    }
+
+    #overlay {
+      position: absolute;
+      top: 65%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      width: 110px; /* Adjust the width of the overlay image */
+      height: 90px;
+    }
+
+    #tryOnButton {
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    #buttons-container {
+      display: flex;
+    }
+
+    .necklace-button {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="video-container">
+    <video id="video" width="640" height="480" autoplay></video>
+    <img id="overlay" src="download__1_-removebg-preview.png" alt="Necklace">
+  </div>
+
+  <button id="tryOnButton">Try On Necklace</button>
+
+  <div id="buttons-container">
+    <img class="necklace-button" src="download__2_-removebg-preview.png" alt="Necklace 1">
+    <img class="necklace-button" src="download__2_-removebg-preview.png" alt="Necklace 2">
+    <img class="necklace-button" src="download__2_-removebg-preview.png" alt="Necklace 3">
+    <!-- Add more buttons as needed -->
+  </div>
+
+  <script>
+    const video = document.getElementById('video');
+    const overlay = document.getElementById('overlay');
+    const tryOnButton = document.getElementById('tryOnButton');
+    const necklaceButtons = document.querySelectorAll('.necklace-button');
+
+    async function setupCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+      } catch (error) {
+        console.error('Error accessing camera:', error);
+      }
+    }
+
+    tryOnButton.addEventListener('click', () => {
+      // Toggle the visibility of the overlay
+      overlay.style.display = overlay.style.display === 'none' ? 'block' : 'none';
+    });
+
+    necklaceButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        // Change the necklace image when a button is clicked
+        overlay.src = button.src;
+      });
+    });
+
+    // Call the setupCamera function when the page is loaded
+    window.addEventListener('load', setupCamera);
+  </script>
+</body>
+</html>
