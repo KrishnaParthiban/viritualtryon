@@ -5,8 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $servername = "localhost"; // Replace with your server name
     $username = "root"; // Replace with your database username
     $password = ""; // Replace with your database password
-    $conn = new mysqli('localhost', 'root', '', 'cartlist');
-    $dbname = "cart details"; // Replace with your database name
+    $dbname = "cartlist"; // Replace with your database name
 
     // Create connection
     $conn = new mysqli('localhost', 'root', '', 'cartlist');
