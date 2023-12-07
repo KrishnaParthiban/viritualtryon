@@ -1,0 +1,25 @@
+
+body{
+    margin-bottom: 1000px;
+}.vedio{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 50px;
+}
+#video{
+   border: 5px solid black;
+   border-radius: 50px;
+}
+.camb img{
+    height: 30px;
+}
+.camb{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: gray;
+    padding: 10px;
+    border-radius: 100%;
+}
