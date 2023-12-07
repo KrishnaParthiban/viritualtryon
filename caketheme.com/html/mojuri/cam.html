@@ -37,34 +37,64 @@
       cursor: pointer;
       margin-bottom: 20px;
     }
+    #button2{
+      padding: 10px 10px;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 500px;
+      margin-left: 50px;
+      margin-bottom: 20px;
+    }
 
     #buttons-container {
       display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      margin-left: 50px ;
+      height: 50%;
+
     }
 
     .necklace-button {
-      width: 30px;
-      height: 30px;
+      display: flex;
+      justify-content: space-around;
+     border: 1px solid black;
+     border-radius: 5000000px;
+      width: 100px;
+      height: 100px;
       margin-right: 10px;
       cursor: pointer;
+      margin-block:10px ;
+    }
+    .pic{
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
     }
   </style>
 </head>
 <body>
+  <div class="pic">
   <div id="video-container">
     <video id="video" width="640" height="480" autoplay></video>
     <img id="overlay" src="download__1_-removebg-preview.png" alt="Necklace">
   </div>
-
-  <button id="tryOnButton">Try On Necklace</button>
-
   <div id="buttons-container">
     <img class="necklace-button" src="download__2_-removebg-preview.png" alt="Necklace 1">
     <img class="necklace-button" src="download__2_-removebg-preview.png" alt="Necklace 2">
     <img class="necklace-button" src="download__2_-removebg-preview.png" alt="Necklace 3">
     <!-- Add more buttons as needed -->
+    
   </div>
-
+  </div>
+<div>
+  <button id="tryOnButton">Try On Necklace</button>
+ 
+<button id="button2"><img src="assets/img/camera-solid.svg" alt=""></i></button>
+</div>
+ 
   <script>
     const video = document.getElementById('video');
     const overlay = document.getElementById('overlay');
