@@ -3,98 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Virtual Try-On</title>
+  <title>Camera Capture</title>
   <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    #video-container {
-      position: relative;
-      margin-bottom: 20px;
-      margin-top: 40px;
-    }
-
     #overlay {
-      position: absolute;
-      top: 65%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      width: 110px; /* Adjust the width of the overlay image */
-      height: 90px;
-    }
-
-    #tryOnButton {
-      padding: 10px 20px;
-      background-color: #3498db;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      margin-bottom: 20px;
-    }
-    #button2{
-      padding: 10px 10px;
-      background-color: #3498db;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      border-radius: 500px;
-      margin-left: 50px;
-      margin-bottom: 20px;
-    }
-
-    #buttons-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      margin-left: 50px ;
-      height: 50%;
-
-    }
-
-    .necklace-button {
-      display: flex;
-      justify-content: space-around;
-     border: 1px solid black;
-     border-radius: 5000000px;
-      width: 100px;
-      height: 100px;
-      margin-right: 10px;
-      cursor: pointer;
-      margin-block:10px ;
-    }
-    .pic{
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div class="pic">
-  <div id="video-container">
-    <video id="video" width="640" height="480" autoplay></video>
-    <img id="overlay" src="download__1_-removebg-preview.png" alt="Necklace">
-  </div>
-  <div id="buttons-container">
-    <img class="necklace-button" src="download__2_-removebg-preview.png" alt="Necklace 1">
-    <img class="necklace-button" src="download__2_-removebg-preview.png" alt="Necklace 2">
-    <img class="necklace-button" src="download__2_-removebg-preview.png" alt="Necklace 3">
-    <!-- Add more buttons as needed -->
-    
-  </div>
-  </div>
-<div>
-  <button id="tryOnButton">Try On Necklace</button>
- 
-<button id="button2"><img src="assets/img/camera-solid.svg" alt=""></i></button>
-</div>
- 
+  <video id="video" width="640" height="480" autoplay></video>
+  <button id="tryOnButton">Toggle Overlay</button>
+  <img id="overlay" width="640" height="480" style="display: none;" alt="Necklace Overlay">
+  <button class="necklace-button" data-srcaketheme.com="">Necklace 1</button>
+  <button class="necklace-button" data-src="path_to_necklace_image2.jpg">Necklace 2</button>
+  <!-- Add more buttons as needed -->
+  <button id="captureAndDownloadButton">Capture and Download</button>
+
   <script>
     const video = document.getElementById('video');
     const overlay = document.getElementById('overlay');
@@ -118,9 +42,29 @@
     necklaceButtons.forEach((button) => {
       button.addEventListener('click', () => {
         // Change the necklace image when a button is clicked
-        overlay.src = button.src;
+        overlay.src = button.dataset.src;
       });
     });
+
+    function captureAndDownload() {
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const context = canvas.getContext('2d');
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Convert canvas to image data URL
+      const dataURL = canvas.toDataURL('image/png');
+
+      // Create a link and trigger the download
+      const a = document.createElement('a');
+      a.href = dataURL;
+      a.download = 'captured_image.png';
+      a.click();
+    }
+
+    // Add event listener to capture and download button
+    document.getElementById('captureAndDownloadButton').addEventListener('click', captureAndDownload);
 
     // Call the setupCamera function when the page is loaded
     window.addEventListener('load', setupCamera);
