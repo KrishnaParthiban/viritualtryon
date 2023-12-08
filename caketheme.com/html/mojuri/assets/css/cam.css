@@ -13,7 +13,7 @@ body{
    border-radius: 50px;
 }
 .camb img{
-    height: 30px;
+    height: 200px;
 }
 .camb{
     display: flex;
@@ -22,4 +22,16 @@ body{
     background-color: gray;
     padding: 10px;
     border-radius: 100%;
+}
+.cam{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.overal{
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
 }
