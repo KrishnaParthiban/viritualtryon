@@ -2,11 +2,11 @@
 // Establish connection to your MySQL database
 $servername = "localhost";
 $username = "root";
-$password = "";
-$dbname = "contactform";
+$password = "password";
+$dbname = "database";
 
 // Create connection
-$conn = new mysqli('localhost', 'root', '', 'contactform');
+$conn = new mysqli('localhost', 'root', '', 'database');
 
 // Check connection
 if ($conn->connect_error) {
@@ -15,16 +15,17 @@ if ($conn->connect_error) {
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['register'])) {
+    if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['message'])) {
         // Retrieve values from the form
+        $name = $_POST['name'];
         $email = $_POST['email'];
-        $password = $_POST['password'];
+        $message = $_POST['message'];
 
         // Insert user data into the database
-        $sql = "INSERT INTO users (email, password) VALUES ('$email', '$password')";
+        $sql = "INSERT INTO contact_messages (name, email, message) VALUES ('$name', '$email', '$message')";
 
         if ($conn->query($sql) === TRUE) {
-            echo "New record created successfully";
+            echo "Message sent successfully";
             // You can redirect the user to a success page or perform other actions here
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;

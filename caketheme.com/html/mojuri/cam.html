@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Camera Capture</title>
+  <title>Virtual Try-On</title>
+  <link rel="stylesheet" href="assets/css/cam.css">
   
 		<!-- Favicon -->
+		
 		<link rel="shortcut icon" type="image/x-icon" href="media/favicon.png">
 		
 		<!-- Dependency Styles -->
@@ -19,7 +21,7 @@
 		<link rel="stylesheet" href="libs/slick/css/slick-theme.css" type="text/css">
 		<link rel="stylesheet" href="libs/mmenu/css/mmenu.min.css" type="text/css">
 		<link rel="stylesheet" href="libs/slider/css/jslider.css">
-   <link rel="stylesheet" href="assets/css/cam.css">
+
 		<!-- Site Stylesheet -->
 		<link rel="stylesheet" href="assets/css/app.css" type="text/css">
 		<link rel="stylesheet" href="assets/css/responsive.css" type="text/css">
@@ -28,162 +30,269 @@
 		<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&amp;display=swap" rel="stylesheet">
   <style>
-  
-    #overlay {
-      display: none;
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
     }
+
+    #video-container {
+      position: relative;
+      margin-bottom: 20px;
+      margin-top: 40px;
+    }
+
+    #overlay {
+      position: absolute;
+      top: 65%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      width: 110px; /* Adjust the width of the overlay image */
+      height: 90px;
+    }
+
+    #tryOnButton, #screenshotButton {
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 20px;
+      border-radius: 20px;
+
+    }
+
+    #buttons-container {
+      display: flex;
+      flex-direction: column;
+      height:50% ;
+      align-items: center;
+      justify-content: space-evenly;
+      border: 1px solid black;
+      border-radius: 500px;
+    }
+
+    .necklace-button {
+      width: 80px;
+      height: 80px;
+      margin-inline: 10px;
+      cursor: pointer;
+      border: 1px solid black;
+      border-radius: 100%;
+    }
+    .necklace-button img{
+      height: 250px;
+      width: 250px;
+    }
+
   </style>
 </head>
 <body>
-  <div id="page" class="hfeed page-wrapper">
-    <header id="site-header" class="site-header header-v1">
-      <div class="header-mobile">
-        <div class="section-padding">
-          <div class="section-container">
-            <div class="row">
-              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3 header-left">
-                <div class="navbar-header">
-                  <button type="button" id="show-megamenu" class="navbar-toggle"></button>
-                </div>
+  <header id="site-header" class="site-header header-v1">
+    <div class="header-mobile">
+      <div class="section-padding">
+        <div class="section-container">
+          <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3 header-left">
+              <div class="navbar-header">
+                <button type="button" id="show-megamenu" class="navbar-toggle"></button>
               </div>
-              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 header-center">
-                <div class="site-logo">
-                  <a href="index.html ">
-                    <img width="400" height="79" src="assets/img/logoofvirtualtryon-removebg-preview.png" alt="Mojuri – Jewelry Store HTML Template" />
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 header-center">
+              <div class="site-logo">
+                <a href="index.html ">
+                  <img width="400" height="79" src="assets/img/logoofvirtualtryon-removebg-preview.png" alt="Mojuri – Jewelry Store HTML Template" />
+                </a>
+              </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3 header-right">
+              <div class="mojuri-topcart dropdown">
+                <div class="dropdown mini-cart top-cart">
+                  <div class="remove-cart-shadow"></div>
+                  <a class="dropdown-toggle cart-icon" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="icons-cart"><i class="icon-large-paper-bag"></i><span class="cart-count">2</span></div>
                   </a>
-                </div>
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3 header-right">
-                <div class="mojuri-topcart dropdown">
-                  <div class="dropdown mini-cart top-cart">
-                    <div class="remove-cart-shadow"></div>
-                    <a class="dropdown-toggle cart-icon" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <div class="icons-cart"><i class="icon-large-paper-bag"></i><span class="cart-count">2</span></div>
-                    </a>
-                    <div class="dropdown-menu cart-popup">
-                      <div class="cart-empty-wrap">
-                        <ul class="cart-list">
-                          <li class="empty">
-                            <span>No products in the cart.</span>
-                            <a class="go-shop" href="shop-grid-left.html">GO TO SHOP<i aria-hidden="true" class="arrow_right"></i></a>
-                          </li>
-                        </ul>
+                  <div class="dropdown-menu cart-popup">
+                    <div class="cart-empty-wrap">
+                      <ul class="cart-list">
+                        <li class="empty">
+                          <span>No products in the cart.</span>
+                          <a class="go-shop" href="shop-grid-left.html">GO TO SHOP<i aria-hidden="true" class="arrow_right"></i></a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="cart-list-wrap">
+                      <ul class="cart-list ">
+                        <li class="mini-cart-item">
+                          <a href="#" class="remove" title="Remove this item"><i class="icon_close"></i></a>
+                          <a href="shop-details.html" class="product-image"><img width="600" height="600" src="media/product/3.jpg" alt=""></a>
+                          <a href="shop-details.html" class="product-name">Twin Hoops</a>		
+                          <div class="quantity">Qty: 1</div>
+                          <div class="price">$150.00</div>
+                        </li>
+                        <li class="mini-cart-item">
+                          <a href="#" class="remove" title="Remove this item"><i class="icon_close"></i></a>													
+                          <a href="shop-details.html" class="product-image"><img width="600" height="600" src="media/product/1.jpg" alt=""></a>
+                          <a href="shop-details.html" class="product-name">Medium Flat Hoops</a>
+                          <div class="quantity">Qty: 1</div>
+                          <div class="price">$100.00</div>						
+                        </li>
+                      </ul>
+                      <div class="total-cart">
+                        <div class="title-total">Total: </div>
+                        <div class="total-price"><span>$250.00</span></div>
                       </div>
-                      <div class="cart-list-wrap">
-                        <ul class="cart-list ">
-                          <li class="mini-cart-item">
-                            <a href="#" class="remove" title="Remove this item"><i class="icon_close"></i></a>
-                            <a href="shop-details.html" class="product-image"><img width="600" height="600" src="media/product/3.jpg" alt=""></a>
-                            <a href="shop-details.html" class="product-name">Twin Hoops</a>		
-                            <div class="quantity">Qty: 1</div>
-                            <div class="price">$150.00</div>
-                          </li>
-                          <li class="mini-cart-item">
-                            <a href="#" class="remove" title="Remove this item"><i class="icon_close"></i></a>													
-                            <a href="shop-details.html" class="product-image"><img width="600" height="600" src="media/product/1.jpg" alt=""></a>
-                            <a href="shop-details.html" class="product-name">Medium Flat Hoops</a>
-                            <div class="quantity">Qty: 1</div>
-                            <div class="price">$100.00</div>						
-                          </li>
-                        </ul>
-                        <div class="total-cart">
-                          <div class="title-total">Total: </div>
-                          <div class="total-price"><span>$250.00</span></div>
-                        </div>
-                        <div class="free-ship">
-                          <div class="title-ship">Buy <strong>$400</strong> more to enjoy <strong>FREE Shipping</strong></div>
-                          <div class="total-percent"><div class="percent" style="width:20%"></div></div>
-                        </div>
-                        <div class="buttons">
-                          <a href="shop-cart.html" class="button btn view-cart btn-primary">View cart</a>
-                          <a href="shop-checkout.html" class="button btn checkout btn-default">Check out</a>
-                        </div>
+                      <div class="free-ship">
+                        <div class="title-ship">Buy <strong>$400</strong> more to enjoy <strong>FREE Shipping</strong></div>
+                        <div class="total-percent"><div class="percent" style="width:20%"></div></div>
+                      </div>
+                      <div class="buttons">
+                        <a href="shop-cart.html" class="button btn view-cart btn-primary">View cart</a>
+                        <a href="shop-checkout.html" class="button btn checkout btn-default">Check out</a>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="header-mobile-fixed">
-          <!-- Shop -->
-          <div class="shop-page">
-            <a href="shop-grid-left.html"><i class="wpb-icon-shop"></i></a>
-          </div>
-
-          <!-- Login -->
-          <div class="my-account">
-            <div class="login-header">
-              <a href="page-my-account.html"><i class="wpb-icon-user"></i></a>
-            </div>
-          </div>
-
-          <!-- Search -->
-          <div class="search-box">
-            <div class="search-toggle"><i class="wpb-icon-magnifying-glass"></i></div>
-          </div>
-
-          <!-- Wishlist -->
-          <div class="wishlist-box">
-            <a href="shop-wishlist.html"><i class="wpb-icon-heart"></i></a>
           </div>
         </div>
       </div>
 
-      <div class="header-desktop">
-        <div class="header-wrapper">
-          <div class="section-padding">
-            <div class="section-container large p-l-r">
-              <div class="row">
-                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 header-left">
-                  <div class="site-logo">
-                    <a href="index.html ">
-                      <img width="400" height="140" src="assets/img/logoofvirtualtryon-removebg-preview.png" alt="Mojuri – Jewelry Store HTML Template" />
-                    </a>
-                  </div>
-                </div>
+      <div class="header-mobile-fixed">
+        <!-- Shop -->
+        <div class="shop-page">
+          <a href="shop-grid-left.html"><i class="wpb-icon-shop"></i></a>
+        </div>
 
-                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 text-center header-center">
-                  <div class="site-navigation">
-                    <nav id="main-navigation">
-                      <ul id="menu-main-menu" class="menu">
-                        <li class="level-0 menu-item  current-menu-item">
-                          <a href="index.html"><span class="menu-item-text">Home</span></a>
-                          
-                        </li>
-                        <li class="level-0 menu-item ">
-                          <a href="page-about.html"><span class="menu-item-text">About Us</span></a>
-                          
-                        </li>
-                        <li class="level-0 menu-item ">
-                          <a href="shop-grid-left.html"><span class="menu-item-text">Shop</span></a>
-                          
-                        </li>
-                        <li class="level-0 menu-item ">
-                          <a href="page-faq.html"><span class="menu-item-text">FAQ</span></a>
-                          
-                        </li>
-                        <li class="level-0 menu-item ">
-                          <a href="cam.html"><span class="menu-item-text">Try On</span></a>
-                          
-                        </li>
-                        <li class="level-0 menu-item">
-                          <a href="page-contact.html"><span class="menu-item-text">Contact</span></a>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                </div>
+        <!-- Login -->
+        <div class="my-account">
+          <div class="login-header">
+            <a href="page-my-account.html"><i class="wpb-icon-user"></i></a>
+          </div>
+        </div>
 
-                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 header-right">
-                  <div class="header-page-link">
-                    <!-- Search -->
-                    <div class="search-box">
-                      <div class="search-toggle"><i class="icon-search"></i></div>
+        <!-- Search -->
+        <div class="search-box">
+          <div class="search-toggle"><i class="wpb-icon-magnifying-glass"></i></div>
+        </div>
+
+        <!-- Wishlist -->
+        <div class="wishlist-box">
+          <a href="shop-wishlist.html"><i class="wpb-icon-heart"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-desktop">
+      <div class="header-wrapper">
+        <div class="section-padding">
+          <div class="section-container large p-l-r">
+            <div class="row">
+              <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 header-left">
+                <div class="site-logo">
+                  <a href="index.html ">
+                    <img style="height: 550px;"  src="assets/img/logoofvirtualtryon-removebg-preview.png" alt="Mojuri – Jewelry Store HTML Template" />
+                  </a>
+                </div>
+              </div>
+
+              <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 text-center header-center">
+                <div class="site-navigation">
+                  <nav id="main-navigation">
+                    <ul id="menu-main-menu" class="menu">
+                      <li class="level-0 menu-item  current-menu-item">
+                        <a href="index.html"><span class="menu-item-text">Home</span></a>
+                        
+                      </li>
+                      <li class="level-0 menu-item">
+                        <a href="page-about.html"><span class="menu-item-text">About Us</span></a>
+                        
+                      </li>
+                      <li class="level-0 menu-item ">
+                        <a href="shop-grid-left.html"><span class="menu-item-text">Shop</span></a>
+                        
+                      </li>
+                      <li class="level-0 menu-item ">
+                        <a href="page-faq.html"><span class="menu-item-text">FAQ</span></a>
+                        
+                      </li>
+                      <li class="level-0 menu-item ">
+                        <a href="cam.html"><span class="menu-item-text">Try On</span></a>
+                        
+                      </li>
+                      <li class="level-0 menu-item">
+                        <a href="page-contact.html"><span class="menu-item-text">Contact</span></a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+
+              <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 header-right">
+                <div class="header-page-link">
+                  <!-- Search -->
+                  <div class="search-box">
+                    <div class="search-toggle"><i class="icon-search"></i></div>
+                  </div>
+
+                  <!-- Login -->
+                  <div class="login-header icon">
+                    <a class="active-login" href="#"><i class="icon-user"></i></a>
+                    <div class="form-login-register">
+                      <div class="box-form-login">
+                        <div class="active-login"></div>
+                        <div class="box-content">
+                          <div class="form-login active">
+                            <form id="login_ajax" method="post" class="login">
+                              <h2>Sign in</h2>
+                              <p class="status"></p>
+                              <div class="content">
+                                <div class="username">
+                                  <input type="text" required="required" class="input-text" name="username" id="username" placeholder="Your name"/>
+                                </div>
+                                <div class="password">
+                                  <input class="input-text" required="required" type="password" name="password" id="password" placeholder="Password"/>
+                                </div>
+                                <div class="rememberme-lost">
+                                  <div class="rememberme">
+                                    <input name="rememberme" type="checkbox" id="rememberme" value="forever"/>
+                                    <label for="rememberme" class="inline">Remember me</label>
+                                  </div>
+                                  <div class="lost_password">
+                                    <a href="forgot-password.html">Lost your password?</a>
+                                  </div>
+                                </div>
+                                <div class="button-login">
+                                  <input type="submit" class="button" name="login" value="Login"/>
+                                </div>
+                                <div class="button-next-reregister">Create An Account</div>
+                              </div>						
+                            </form>
+                          </div>
+                          <div class="form-register">
+                            <form method="post" class="register">
+                              <h2>REGISTER</h2>
+                              <div class="content">
+                                <div class="email">
+                                  <input type="email" class="input-text" placeholder="Email" name="email" id="reg_email" value=""/>
+                                </div>
+                                <div class="password">
+                                  <input type="password" class="input-text" placeholder="Password" name="password" id="reg_password"/>
+                                </div>															
+                                <div class="button-register">
+                                  <input type="submit" class="button" name="register" value="Register"/>
+                                </div>
+                                <div class="button-next-login">Already has an account</div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-
+                  </div>
                     <!-- Login -->
                     <div class="login-header icon">
                       <a class="active-login" href="#"><i class="icon-user"></i></a>
@@ -240,57 +349,56 @@
                       </div>
                     </div>
 
-                    <!-- Wishlist -->
-                    <div class="wishlist-box">
-                      <a href="shop-wishlist.html"><i class="icon-heart"></i></a>
-                      <span class="count-wishlist">1</span>
-                    </div>
-                    
-                    <!-- Cart -->
-                    <div class="mojuri-topcart dropdown light">
-                      <div class="dropdown mini-cart top-cart">
-                        <div class="remove-cart-shadow"></div>
-                        <a class="dropdown-toggle cart-icon" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <div class="icons-cart"><i class="icon-large-paper-bag"></i><span class="cart-count">2</span></div>
-                        </a>
-                        <div class="dropdown-menu cart-popup">
-                          <div class="cart-empty-wrap">
-                            <ul class="cart-list">
-                              <li class="empty">
-                                <span>No products in the cart.</span>
-                                <a class="go-shop" href="shop-grid-left.html">GO TO SHOP<i aria-hidden="true" class="arrow_right"></i></a>
-                              </li>
-                            </ul>
+                  <!-- Wishlist -->
+                  <div class="wishlist-box">
+                    <a href="shop-wishlist.html"><i class="icon-heart"></i></a>
+                    <span class="count-wishlist">1</span>
+                  </div>
+                  
+                  <!-- Cart -->
+                  <div class="mojuri-topcart dropdown light">
+                    <div class="dropdown mini-cart top-cart">
+                      <div class="remove-cart-shadow"></div>
+                      <a class="dropdown-toggle cart-icon" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="icons-cart"><i class="icon-large-paper-bag"></i><span class="cart-count">2</span></div>
+                      </a>
+                      <div class="dropdown-menu cart-popup">
+                        <div class="cart-empty-wrap">
+                          <ul class="cart-list">
+                            <li class="empty">
+                              <span>No products in the cart.</span>
+                              <a class="go-shop" href="shop-grid-left.html">GO TO SHOP<i aria-hidden="true" class="arrow_right"></i></a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="cart-list-wrap">
+                          <ul class="cart-list ">
+                            <li class="mini-cart-item">
+                              <a href="#" class="remove" title="Remove this item"><i class="icon_close"></i></a>
+                              <a href="shop-details.html" class="product-image"><img width="600" height="600" src="media/product/3.jpg" alt=""></a>
+                              <a href="shop-details.html" class="product-name">Twin Hoops</a>		
+                              <div class="quantity">Qty: 1</div>
+                              <div class="price">$150.00</div>
+                            </li>
+                            <li class="mini-cart-item">
+                              <a href="#" class="remove" title="Remove this item"><i class="icon_close"></i></a>													
+                              <a href="shop-details.html" class="product-image"><img width="600" height="600" src="media/product/1.jpg" alt=""></a>
+                              <a href="shop-details.html" class="product-name">Medium Flat Hoops</a>
+                              <div class="quantity">Qty: 1</div>
+                              <div class="price">$100.00</div>						
+                            </li>
+                          </ul>
+                          <div class="total-cart">
+                            <div class="title-total">Total: </div>
+                            <div class="total-price"><span>$250.00</span></div>
                           </div>
-                          <div class="cart-list-wrap">
-                            <ul class="cart-list ">
-                              <li class="mini-cart-item">
-                                <a href="#" class="remove" title="Remove this item"><i class="icon_close"></i></a>
-                                <a href="shop-details.html" class="product-image"><img width="600" height="600" src="media/product/3.jpg" alt=""></a>
-                                <a href="shop-details.html" class="product-name">Twin Hoops</a>		
-                                <div class="quantity">Qty: 1</div>
-                                <div class="price">$150.00</div>
-                              </li>
-                              <li class="mini-cart-item">
-                                <a href="#" class="remove" title="Remove this item"><i class="icon_close"></i></a>													
-                                <a href="shop-details.html" class="product-image"><img width="600" height="600" src="media/product/1.jpg" alt=""></a>
-                                <a href="shop-details.html" class="product-name">Medium Flat Hoops</a>
-                                <div class="quantity">Qty: 1</div>
-                                <div class="price">$100.00</div>						
-                              </li>
-                            </ul>
-                            <div class="total-cart">
-                              <div class="title-total">Total: </div>
-                              <div class="total-price"><span>$250.00</span></div>
-                            </div>
-                            <div class="free-ship">
-                              <div class="title-ship">Buy <strong>$400</strong> more to enjoy <strong>FREE Shipping</strong></div>
-                              <div class="total-percent"><div class="percent" style="width:20%"></div></div>
-                            </div>
-                            <div class="buttons">
-                              <a href="shop-cart.html" class="button btn view-cart btn-primary">View cart</a>
-                              <a href="shop-checkout.html" class="button btn checkout btn-default">Check out</a>
-                            </div>
+                          <div class="free-ship">
+                            <div class="title-ship">Buy <strong>$400</strong> more to enjoy <strong>FREE Shipping</strong></div>
+                            <div class="total-percent"><div class="percent" style="width:20%"></div></div>
+                          </div>
+                          <div class="buttons">
+                            <a href="shop-cart.html" class="button btn view-cart btn-primary">View cart</a>
+                            <a href="shop-checkout.html" class="button btn checkout btn-default">Check out</a>
                           </div>
                         </div>
                       </div>
@@ -302,22 +410,155 @@
           </div>
         </div>
       </div>
-    </header>
-    <div class="vedio">
-  <video id="video" width="640" height="480" autoplay></video>
-  <button id="captureAndDownloadButton" class="camb"><img src="assets/img/camera-solid.svg" alt=""></button>
+    </div>
+  </header>
 
+  <div class="overal">
+  <div class="cam">
+  <div id="video-container">
+    <video id="video" width="640" height="480" autoplay></video>
+    <img id="overlay" src="download__2_-removebg-preview.png" alt="Necklace">
+  </div>
 
+  <button id="tryOnButton">Try On Necklace</button>
+  <button id="screenshotButton"><img src="assets/img/camera-solid.svg" alt=""></button>
 </div>
-  <button id="tryOnButton">Toggle Overlay</button>
-  <img id="overlay" width="640" height="480" style="display: none;" alt="Necklace Overlay">
-  <button class="necklace-button" data-srcaketheme.com="">Necklace 1</button>
-  <button class="necklace-button" data-src="path_to_necklace_image2.jpg"><img src="assets/img/download.jpeg" alt=""></button>
-  <!-- Add more buttons as needed -->
-   <script>
+  <div id="buttons-container">
+    <img class="necklace-button" src="download__2_-removebg-preview.png" alt="Necklace 1">
+    <img class="necklace-button" src="download__2_-removebg-preview.png" alt="Necklace 2">
+    <img class="necklace-button" src="download__2_-removebg-preview.png" alt="Necklace 3">
+    <!-- Add more buttons as needed -->
+  </div>
+</div>
+<footer id="site-footer" class="site-footer background">
+  <div class="footer">
+    <div class="section-padding">
+      <div class="section-container">
+        <div class="block-widget-wrap">
+          <div class="row" style="display: flex; align-items: center; justify-content: space-between;">
+            <div class="col-lg-3 col-md-6">
+              <div class="block block-menu m-b-20">
+                <h2 class="block-title">Contact Us</h2>
+                <div class="block-content">
+                  <ul>
+                    <li>
+                      <span class="contact-us">Head Office:</span> SNS college of Engineering<br> kurumbapalayam
+                    </li>
+                    <li>
+                      <span class="contact-us">Tel:</span> 9791566269
+                    </li>
+                    <li>
+                      <span class="contact-us">Email:</span> kp086719@gmail.com
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="block block-social">
+                <ul class="social-link">
+                  <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                  <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                  <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+                  <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                </ul>
+              </div>
+            </div>
+            <!-- <div class="col-lg-3 col-md-6">
+              <div class="block block-menu">
+                <h2 class="block-title">Customer Services</h2>
+                <div class="block-content">
+                  <ul>
+                    <li>
+                      <a href="#">Contact Us</a>
+                    </li>
+                    <li>
+                      <a href="#">Track Your Order</a>
+                    </li>
+                    <li>
+                      <a href="#">Product Care & Repair</a>
+                    </li>
+                    <li>
+                      <a href="#">Book an Appointment</a>
+                    </li>
+                    <li>
+                      <a href="#">Frequently Asked Questions</a>
+                    </li>
+                    <li>
+                      <a href="#">Shipping & Returns</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div> -->
+            <div class="col-lg-3 col-md-6">
+              <div class="block block-menu">
+                <h2 class="block-title">Quick Links</h2>
+                <div class="block-content">
+                  <ul>
+                    <li>
+                      <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                      <a href="page-about.html">About Us</a>
+                    </li>
+                    <li>
+                      <a href="shop-grid-left.html">shop</a>
+                    </li>
+                    
+                    <li>
+                      <a href="cam.html">Try On</a>
+                    </li>
+                    <li>
+                      <a href="page-contact.html">Contact</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-lg-3 col-md-6">
+              <div class="block block-menu">
+                <h2 class="block-title">Catalog</h2>
+                <div class="block-content">
+                  <ul>
+                    <li>
+                      <a href="#">Earrings</a>
+                    </li>
+                    <li>
+                      <a href="#">Necklaces</a>
+                    </li>
+                    <li>
+                      <a href="#">Bracelets</a>
+                    </li>
+                    <li>
+                      <a href="#">Rings</a>
+                    </li>
+                    <li>
+                      <a href="#">Jewelry Box</a>
+                    </li>
+                    <li>
+                      <a href="#">Studs</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  </div>
+  <div style="display: flex; align-items: center;justify-content: center;">
+    <p class="copyright">Copyright © 2023 All Right Reserved by VirtualTryon</p>
+    </div>
+  </div>
+</footer>
+
+  <script>
     const video = document.getElementById('video');
     const overlay = document.getElementById('overlay');
     const tryOnButton = document.getElementById('tryOnButton');
+    const screenshotButton = document.getElementById('screenshotButton');
     const necklaceButtons = document.querySelectorAll('.necklace-button');
 
     async function setupCamera() {
@@ -334,32 +575,26 @@
       overlay.style.display = overlay.style.display === 'none' ? 'block' : 'none';
     });
 
-    necklaceButtons.forEach((button) => {
-      button.addEventListener('click', () => {
-        // Change the necklace image when a button is clicked
-        overlay.src = button.dataset.src;
-      });
-    });
-
-    function captureAndDownload() {
+    screenshotButton.addEventListener('click', () => {
+      // Take a screenshot and download it
       const canvas = document.createElement('canvas');
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       const context = canvas.getContext('2d');
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-      // Convert canvas to image data URL
-      const dataURL = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = 'tryon.png';
+      link.click();
+    });
 
-      // Create a link and trigger the download
-      const a = document.createElement('a');
-      a.href = dataURL;
-      a.download = 'captured_image.png';
-      a.click();
-    }
-
-    // Add event listener to capture and download button
-    document.getElementById('captureAndDownloadButton').addEventListener('click', captureAndDownload);
+    necklaceButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        // Change the necklace image when a button is clicked
+        overlay.src = button.src;
+      });
+    });
 
     // Call the setupCamera function when the page is loaded
     window.addEventListener('load', setupCamera);
